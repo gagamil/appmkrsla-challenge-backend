@@ -10,7 +10,8 @@ export class ShortenerService {
         const shortenedURL = generateRandomAlphanumeric10()
         this.short_url_list.push({
             sourceURL: sourceURL, 
-            shortURL: shortenedURL
+            shortURL: shortenedURL,
+            isAck: false,
         });
         return `http://localhost:3000/${shortenedURL}`;
       }
