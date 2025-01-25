@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Challenge for LAMAKERS job position: backend dev">
+    <meta name="author" content="Gabriel Gamil">
+    <title>Link shortener challenge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"  crossorigin="anonymous">
+    <meta name="theme-color" content="#712cf9">
+
+    <!-- Custom inline styles for this template -->
+    <style>
+        html,
+        body {
+        height: 100%;
+        }
+
+        .form-signin {
+        max-width: 330px;
+        padding: 1rem;
+        }
+
+        .form-signin .form-floating:focus-within {
+        z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        }
+        .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+        }
+
+        @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+        }
+
+        .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+        }
+
+        .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+        }
+
+        .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+        }
+
+        .bd-mode-toggle {
+        z-index: 1500;
+        }
+
+        .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+        }
+    </style>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body class="d-flex align-items-center py-4 bg-body-tertiary">
+    
+
+    <main class="form-signin w-100 m-auto">
+        <div x-data="config()" x-init="initSSE()">
+            <div class="alert alert-light" role="alert" x-html="shortenedURL">
+                
+            </div>
+              
+            <form @submit.prevent="submitData">
+                <h1 class="h3 mb-3 fw-normal">Shorten your link</h1>
+
+                <div class="form-floating">
+                <input x-model="sourceURL" type="url" class="form-control" id="floatingInput" placeholder="http://example.com" required list="defaultURLs">
+                <label for="floatingInput">Enter your web link</label>
+
+                <datalist id="defaultURLs">
+                    <option value="https://developer.mozilla.org/" label="MDN Web Docs"></option>
+                    <option value="http://www.google.com/" label="Google"></option>
+                    <option value="http://www.microsoft.com/" label="Microsoft"></option>
+                    <option value="https://www.mozilla.org/" label="Mozilla"></option>
+                    <option value="http://w3.org/" label="W3C"></option>
+                </datalist>
+                </div>
+
+                <button class="btn btn-primary w-100 mt-2 py-2" type="submit">Ok</button>
+                <p class="mt-5 mb-3 text-body-secondary">&copy; 2025</p>
+            </form>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function config() {
+            return {
+
+                isSubmitting: false,
+                sourceURL: '',
+                eventSource: undefined,
+                shortenedURL: '',
+                
+                submitData: function () {
+                    this.isSubmitting = true;
+                    console.log('submitData => ', this.sourceURL);
+                    const url = '/url'
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({sourceURL: this.sourceURL})
+                    }
+                    )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log('source link submitted');
+                        console.log(data);
+                        //this.stripImages[this.currIdx] = data;
+                        //this.chosenStripImage = this.stripImages.at(this.currIdx);
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+                },
+
+                initSSE: function () {
+                    this.eventSource = new EventSource('http://localhost:3000/events/sse');
+
+                    this.eventSource.onmessage = (event) => {
+                        const data = JSON.parse(event.data);
+                        console.log(data)
+                        this.shortenedURL = `<a href="${data.shortURL}" target="__blank">${data.shortURL}</a>`;
+                    };
+
+                    this.eventSource.onopen = () => {
+                        console.log('SSE connection opened')
+                    }
+
+                    this.eventSource.onerror = (error) => {
+                        console.log('SSE connection closed');
+                        console.error('EventSource failed:', error);
+                    }
+                },
+            };
+        }
+    </script>
+  </body>
+</html>
