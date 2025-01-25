@@ -13,7 +13,7 @@ export class AppController {
     private readonly sseService: SseService,
   ) {}
 
-  @Get('home/')
+  @Get('/')
   serveStatic(@Res() res: Response) {
     res.sendFile(join(__dirname, '..', 'client', 'index.html'));
   }
