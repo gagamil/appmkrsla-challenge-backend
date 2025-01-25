@@ -7,13 +7,17 @@ export class ShortenerService {
     private readonly short_url_list: ShortURL[] = [];
 
     createShortURL(sourceURL: string) {
+        // if the sourceURL is already in the "database" then use it.
+        const foundItem =  this.short_url_list.find((record) => record.sourceURL === sourceURL);
         const shortenedURL = generateRandomAlphanumeric10()
+
+        const finalShortURL = foundItem ? foundItem.shortURL : shortenedURL
         this.short_url_list.push({
             sourceURL: sourceURL, 
-            shortURL: shortenedURL,
+            shortURL: finalShortURL,
             isAck: false,
         });
-        return `http://localhost:3000/${shortenedURL}`;
+        return `http://localhost:3000/${finalShortURL}`;
       }
 
     getShortURL(shortURL: string): string {
