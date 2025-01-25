@@ -12,12 +12,12 @@ export class ShortenerService {
             sourceURL: sourceURL, 
             shortURL: shortenedURL
         });
-        return shortenedURL;
+        return `http://localhost:3000/${shortenedURL}`;
       }
 
     getShortURL(shortURL: string): string {
         const foundItem =  this.short_url_list.find((record) => record.shortURL === shortURL);
-        return foundItem ? foundItem.sourceURL : ''
+        return foundItem ? foundItem.sourceURL : 'No data'
     }
 }
 
