@@ -1,19 +1,36 @@
-<p>
-  A challenge for a backend dev position at LAMAKERS. Also familiarizing myself with the framework. </br>
-  The mini project has a static webpage with an input. The input has a datalist with few urls. </br>
-  The api endpoints are built as per the specs. </br>
-  Using sse as an alternative way to deliver the resuts. </br>
-</p>
+## A challenge for a backend dev position at LAMAKERS
 
-<p>
-  Current implementation basically fanouts the result to whoever is connected. No differentiation per client. </br>
-  This, however does somehow contradict to the specs in term of acking the message (who and how)?
-  How: do we need to ack using the same protocol which delivered the message? Or same meaning the conventional one?
-</p>
+Build an URL shortener demo app (backend) on node (JavaScript/TypeScript).
 
-<p>
-  No unittests. 
-</p>
+## Moving parts
+
+Chose nestjs framework.
+
+### WEB UI
+
+For convenience there is a web page with a form to enter an url. It is a static webpage served by nestjs.
+When form is successfully submitted via fetch api the endpoint returns http response 201. Also the form is linked to a datalist for convenience.
+
+The shortened URL will come via SSE as a dict. WHen this happens the alert right above the form gets updates.
+
+The user clicks on the link (shortened) and a new window gets opened. The the returned value for this endpoint is a json containing the original url.
+
+## BACKEND
+
+Standard HTTP endpoints:
+
+1st for posting the original URL.
+2nd for getting the original using the shortened one.
+
+SSE: using this as a mean to return to the client (actually clients) the just shortened link).
+The other obvious option could be a socket connection (which is duplex). However didn't want to use it.
+
+This decision makes the requirement to ack a bit off. Since it should happen via the same mean as delivery.
+Still, can ack via a dedicated API endpoint or simply messaging to a queue (makes the backend implementation a bit more separated in terms of concerns). The flag isAck is implemented in the data structure (interface).
+
+## Unittests.
+
+None.
 
 ## Description
 
