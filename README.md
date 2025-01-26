@@ -1,4 +1,4 @@
-## A challenge for a backend dev position at LAMAKERS
+## A challenge for a backend dev position at AppMakersLA
 
 Build an URL shortener demo app (backend) on node (JavaScript/TypeScript). The specific requirements are missing so that nobody can simply google then copy and paste without getting to know the codebase and what exactly it does.
 
