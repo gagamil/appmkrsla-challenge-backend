@@ -19,9 +19,9 @@ export class AppController {
   }
 
   @Post('url')
-    create(@Body() createShortURLDto: CreateShortURLDto) {
+    async create(@Body() createShortURLDto: CreateShortURLDto) {
       console.log(`Controller POST ${createShortURLDto.sourceURL}`)
-      const response = this.shortenerService.createShortURL(createShortURLDto.sourceURL)
+      const response = await this.shortenerService.createShortURL(createShortURLDto.sourceURL)
   
       const eventData = { sourceURL: createShortURLDto.sourceURL, shortURL: response };
       this.sseService.emitEvent(eventData);
@@ -30,7 +30,7 @@ export class AppController {
     }
 
   @Get(':url')
-    findExact(@Param('url') url: string) {
-      return {url: this.shortenerService.getShortURL(url)};
+    async findExact(@Param('url') url: string) {
+      return {url: await this.shortenerService.getShortURL(url)};
     }
 }

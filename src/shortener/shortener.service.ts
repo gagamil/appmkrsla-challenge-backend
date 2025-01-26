@@ -1,28 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
+import { Cache } from 'cache-manager';
+import { CACHE_MANAGER } from '@nestjs/cache-manager'
 import {ShortURL} from './interfaces/shortener.interface'
 
 
 @Injectable()
 export class ShortenerService {
-    private readonly short_url_list: ShortURL[] = [];
+    constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
+    // private readonly short_url_list: ShortURL[] = [];
 
-    createShortURL(sourceURL: string) {
+    async createShortURL(sourceURL: string): Promise<string> {
         // if the sourceURL is already in the "database" then use it.
-        const foundItem =  this.short_url_list.find((record) => record.sourceURL === sourceURL);
-        const shortenedURL = generateRandomAlphanumeric10()
+        
+        const foundItem = await this.cacheManager.get(sourceURL);
+        const shortenedURL = generateRandomAlphanumeric10();
 
-        const finalShortURL = foundItem ? foundItem.shortURL : shortenedURL
-        this.short_url_list.push({
+        const finalShortURL = foundItem ? foundItem['shortURL'] : shortenedURL;
+        
+        const data = {
             sourceURL: sourceURL, 
             shortURL: finalShortURL,
             isAck: false,
-        });
+        }
+        // cache key and target value
+        await this.cacheManager.set(sourceURL, data);
+        await this.cacheManager.set(finalShortURL, data);
+
         return `http://localhost:3000/${finalShortURL}`;
       }
 
-    getShortURL(shortURL: string): string {
-        const foundItem =  this.short_url_list.find((record) => record.shortURL === shortURL);
-        return foundItem ? foundItem.sourceURL : 'No data'
+    async getShortURL(shortURL: string): Promise<string> {
+        const foundItem = await this.cacheManager.get(shortURL);
+        return foundItem ? foundItem['sourceURL'] : 'No data'
     }
 }
 
