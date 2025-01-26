@@ -28,6 +28,8 @@ The other obvious option could be a socket connection (which is duplex). However
 This decision makes the requirement to ack a bit off. Since it should happen via the same mean as delivery.
 Still, can ack via a dedicated API endpoint or simply messaging to a queue (makes the backend implementation a bit more separated in terms of concerns). The flag isAck is implemented in the data structure (interface).
 
+As for the use of async ops - did enable nestjs cache system which is by definition async. Thus all calling layers are equally async and ready to switch to traditional databases.
+
 ## Unittests.
 
 None.
