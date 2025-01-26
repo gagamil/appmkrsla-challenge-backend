@@ -17,7 +17,7 @@ The shortened URL will come via SSE as a dict. WHen this happens the alert right
 
 The user clicks on the link (shortened) and a new window gets opened. The the returned value for this endpoint is a json containing the original url.
 
-## BACKEND
+### BACKEND
 
 Standard HTTP endpoints:
 
@@ -36,7 +36,7 @@ As for the use of async ops - did enable nestjs cache system which is by definit
 
 None.
 
-## Description
+## NestJS Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
