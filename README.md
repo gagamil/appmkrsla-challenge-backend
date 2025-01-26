@@ -1,6 +1,8 @@
 ## A challenge for a backend dev position at LAMAKERS
 
-Build an URL shortener demo app (backend) on node (JavaScript/TypeScript).
+Build an URL shortener demo app (backend) on node (JavaScript/TypeScript). The specific requirements are not included so that nobody can easily google and copy and paste without getting to know the codebase.
+
+I am a backend dev with mostly Python/Django experience (over 15 years). So this challenge was great in terms of looking into how nestjs is designed. Also opinionated but more structured than Django. Great for larger projects.
 
 ## Moving parts
 
