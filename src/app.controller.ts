@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, Res } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Res, ValidationPipe, UsePipes } from '@nestjs/common';
 import { Response } from 'express';
 import { join } from 'path';
 import {CreateShortURLDto} from './shortener/dto/create-shorturl.dto'
@@ -19,6 +19,7 @@ export class AppController {
   }
 
   @Post('url')
+  @UsePipes(new ValidationPipe())
     async create(@Body() createShortURLDto: CreateShortURLDto) {
       console.log(`Controller POST ${createShortURLDto.sourceURL}`)
       const response = await this.shortenerService.createShortURL(createShortURLDto.sourceURL)

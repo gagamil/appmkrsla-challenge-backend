@@ -126,7 +126,11 @@
             <div class="alert alert-light" role="alert" x-html="shortenedURL">
                 
             </div>
-              
+              <template x-if="errorMessage">
+                <div class="alert alert-warning" role="alert">
+                    <p x-text="errorMessage"></p>
+                </div>
+            </template>
             <form @submit.prevent="submitData">
                 <h1 class="h3 mb-3 fw-normal">Shorten your link</h1>
 
@@ -157,27 +161,33 @@
                 sourceURL: '',
                 eventSource: undefined,
                 shortenedURL: '',
+                errorMessage: '',
                 
-                submitData: function () {
+                submitData: async function () {
                     this.isSubmitting = true;
+                    this.errorMessage = '';
                     console.log('submitData => ', this.sourceURL);
                     const url = '/url'
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({sourceURL: this.sourceURL})
-                    }
-                    )
-                    .then((response) => response.json())
-                    .then((data) => {
-                        console.log('source link submitted');
-                        console.log(data);
-                    })
-                    .catch((error) => {
-                        console.log(error)
-                    });
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({sourceURL: this.sourceURL})
+                        })
+
+                        
+                        if(!response.ok){
+                            const errorData = await response.json()
+                            throw new Error(errorData.message.join(', '));
+                        }
+                        const responseData = await response.json();
+                        console.log('Success:', responseData);
+                    } catch(error){
+                        this.errorMessage = error.message;
+                    };
                 },
 
                 initSSE: function () {
